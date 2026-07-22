@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"gorm.io/gorm"
 
 	allVar "github.com/aexionn/Cli_App/allvar"
@@ -32,9 +33,9 @@ func addTask(cmd *cobra.Command, args []string) {
 		fmt.Printf("Table are empty")
 	}
 
-	if result.ID >= 10 {
-		fmt.Println("Task Limit Already reach you can't insert anymore")
-		return
+	if int(result.ID) >= viper.GetInt("behavior.task_limit") {
+		fmt.Printf("Task Limit Already reach you can't insert anymore %d\n", viper.GetInt("behavior.task_limit"))
+		os.Exit(1)
 	}
 
 	validatePriorities := map[string]bool{

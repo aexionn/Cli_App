@@ -42,13 +42,14 @@ func deleteTask(cmd *cobra.Command, args []string) {
 
 	if deleteStatus != "" {
 		deleteStatus = strings.ToUpper(deleteStatus)
-		var completedVal int
-		if deleteStatus == "SELESAI" {
+		var completedVal byte
+		switch deleteStatus {
+		case "SELESAI":
 			completedVal = 1
-		} else if deleteStatus == "PENDING" {
+		case "PENDING":
 			completedVal = 0
-		} else {
-			fmt.Printf("Status tidak valid: %s\n", deleteStatus)
+		default:
+			fmt.Printf("Status tidak valid %s", deleteStatus)
 			os.Exit(1)
 		}
 
@@ -82,9 +83,9 @@ func deleteTask(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	var targetIDs []byte
+	var targetIDs []int
 	for _, t := range targets {
-		targetIDs = append(targetIDs, t.ID)
+		targetIDs = append(targetIDs, int(t.ID))
 	}
 
 	rows, _ := gorm.G[model.Task](config.DB).Where("id IN ?", targetIDs).Delete(ctx)

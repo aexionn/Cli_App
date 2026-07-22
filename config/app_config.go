@@ -14,6 +14,7 @@ import (
 // }
 
 func SetupConfig() error{
+	viper.SetDefault("logging.gorm_log_level", "warn")
 
 	viper.SetConfigFile("taskman.yaml")
 	viper.SetConfigName("taskman")

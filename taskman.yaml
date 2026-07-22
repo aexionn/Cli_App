@@ -5,3 +5,5 @@ storage:
 behavior:
   hide_done_after_day: 4  
   task_limit: 10
+logging:
+  gorm_log_level: silent  # silent | error | warn | info
