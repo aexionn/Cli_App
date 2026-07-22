@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/aexionn/Cli_App/database/model"
+	// "github.com/aexionn/Cli_App/database/model"
 	"github.com/glebarez/sqlite"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
