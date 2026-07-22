@@ -26,7 +26,6 @@ func SetupConfig() error{
 		if !errors.As(err, &notFound) {
 			return fmt.Errorf("reading config: %w", err)
 		}
-		// No config file is fine — defaults + env + flags still apply.
 	}
 	return nil
 }
