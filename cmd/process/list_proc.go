@@ -2,15 +2,14 @@ package process
 
 import (
 	"fmt"
+	"time"
+	"gorm.io/gorm"
 	"strings"
 
 	"github.com/spf13/cobra"
-	// "gorm.io/gorm"
-
-	// allVar "github.com/aexionn/Cli_App/allvar"
+	"github.com/spf13/viper"
 	"github.com/aexionn/Cli_App/config"
-	"github.com/aexionn/Cli_App/model"
-	// task "github.com/aexionn/Cli_App/model"
+	"github.com/aexionn/Cli_App/database/model"
 )
 
 var ListCmd = &cobra.Command{
@@ -23,8 +22,12 @@ var ListCmd = &cobra.Command{
 
 func listTasks(cmd *cobra.Command, args []string) {
 	var tasks []model.Task
-	result := config.DB.Find(&tasks)
-
+	var result *gorm.DB
+	hideDays := viper.GetInt("behavior.hide_done_after_day")
+	if hideDays > 0 {
+		cutoff := time.Now().AddDate(0, 0, hideDays)
+		result = config.DB.Debug().Where("completed != ? OR completed_at < ?", 1, cutoff.Unix()).Find(&tasks)
+	}
 	if result.Error != nil {
 		fmt.Printf("Proses pengambilan data error karena %d", result.Error)
 		return
@@ -39,12 +42,12 @@ func listTasks(cmd *cobra.Command, args []string) {
 	fmt.Println(strings.Repeat("-", 90))
 
 	for _,task := range tasks {
-		status := func() string{if task.Completed != false {return "SELESAI"}; return "PENDING"}()
+		status := func() string{if task.Completed != 0 {return "SELESAI"}; return "PENDING"}()
 		fmt.Printf("%-4d %-10s %-50s %-10s %s\n",
 			task.ID,
 			status,
 			task.Description,
 			task.Priority,
-			task.CreatedAt.Format("2006-01-02 15:04:05"))
+			time.Unix(task.CreatedAt, 0))
 	}
 }

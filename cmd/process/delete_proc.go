@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/aexionn/Cli_App/config"
-	"github.com/aexionn/Cli_App/model"
+	"github.com/aexionn/Cli_App/database/model"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
 )

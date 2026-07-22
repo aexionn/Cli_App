@@ -1,0 +1,7 @@
+storage:
+  driver: sqlite
+  path: ./database/taskman.sqlite3
+  auto_migrate: true
+behavior:
+  hide_done_after_day: 4  
+  task_limit: 10

@@ -12,7 +12,7 @@ import (
 
 	allVar "github.com/aexionn/Cli_App/allvar"
 	"github.com/aexionn/Cli_App/config"
-	"github.com/aexionn/Cli_App/model"
+	"github.com/aexionn/Cli_App/database/model"
 )
 
 var AddCmd = &cobra.Command{
@@ -25,6 +25,7 @@ var AddCmd = &cobra.Command{
 
 func addTask(cmd *cobra.Command, args []string) {
 	description := strings.Join(args, "")
+	
 
 	validatePriorities := map[string]bool{
 		"high":   true,
@@ -40,8 +41,8 @@ func addTask(cmd *cobra.Command, args []string) {
 	task := model.Task {
 		Description: description,
 		Priority: allVar.Priority,
-		Completed: false,
-		CreatedAt: time.Now(),
+		Completed: 0,
+		CreatedAt: time.Now().Unix(),
 	}
 
 	ctx := context.Background()

@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/aexionn/Cli_App/config"
-	"github.com/aexionn/Cli_App/model"
+	"github.com/aexionn/Cli_App/database/model"
 )
 
 var CompleteCmd = &cobra.Command{
@@ -38,8 +38,8 @@ func completeTask(cmd *cobra.Command, args []string){
 
 	now := time.Now()
 	task := model.Task {
-		Completed: true,
-		CompletedAt: &now,
+		Completed: 1,
+		CompletedAt: now.Unix(),
 	}
 
 	ctx := context.Background()

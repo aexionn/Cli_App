@@ -19,7 +19,7 @@ import (
 
 	"github.com/aexionn/Cli_App/cmd"
 	"github.com/aexionn/Cli_App/config"
-	"github.com/aexionn/Cli_App/model"
+	"github.com/aexionn/Cli_App/database/model"
 	"gorm.io/gorm"
 )
 
