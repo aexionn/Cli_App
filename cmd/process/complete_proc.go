@@ -22,17 +22,16 @@ var CompleteCmd = &cobra.Command{
 }
 
 func completeTask(cmd *cobra.Command, args []string){
-	id, err := strconv.ParseUint(args[0], 0, 8)
+	id, convErr := strconv.ParseUint(args[0], 0, 8)
+	ctx := context.Background()
+	result, dbErr := gorm.G[model.Task](config.DB).Where("id = ?", id).First(ctx)
 	
-	var tasks []model.Task
-	result := config.DB.Where("id = ?", id).First(&tasks)
-	
-	if err != nil {
+	if convErr != nil {
 		fmt.Printf("%s not a number type\n", args[0])
 		os.Exit(1)
 	}
 
-	if result.Error != nil {
+	if dbErr != nil {
 		fmt.Printf("Tidak ada data dengan id #%d", id)
 	}
 
@@ -42,12 +41,11 @@ func completeTask(cmd *cobra.Command, args []string){
 		CompletedAt: now.Unix(),
 	}
 
-	ctx := context.Background()
 	rows, _ := gorm.G[model.Task](config.DB).Where("id = ?", id).Updates(ctx, task)
 
 	if rows == 0 {
 		fmt.Printf("Tidak berhasil mengubah data")
 	}
 	
-	fmt.Printf("Completed task #%d: %s\n", id, tasks[0].Description)
+	fmt.Printf("Completed task #%d: %s\n", id, result.Description)
 }

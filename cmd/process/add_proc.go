@@ -25,7 +25,17 @@ var AddCmd = &cobra.Command{
 
 func addTask(cmd *cobra.Command, args []string) {
 	description := strings.Join(args, "")
-	
+	ctx := context.Background()
+	result, dbErr := gorm.G[model.Task](config.DB).Last(ctx)
+
+	if dbErr != nil && dbErr != gorm.ErrRecordNotFound {
+		fmt.Printf("Table are empty")
+	}
+
+	if result.ID >= 10 {
+		fmt.Println("Task Limit Already reach you can't insert anymore")
+		return
+	}
 
 	validatePriorities := map[string]bool{
 		"high":   true,
@@ -45,10 +55,8 @@ func addTask(cmd *cobra.Command, args []string) {
 		CreatedAt: time.Now().Unix(),
 	}
 
-	ctx := context.Background()
 
-	result := gorm.WithResult()
-	err := gorm.G[model.Task](config.DB, result).Create(ctx, &task)
+	err := gorm.G[model.Task](config.DB).Create(ctx, &task)
 
 	if err != nil {
 		fmt.Println("Proses memasukkan data gagal")

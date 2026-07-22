@@ -18,7 +18,7 @@ func Connection() {
 		panic("Cannot connect to database") 
 	}
 
-	DB.AutoMigrate(&model.Task{}, &model.User{})
+	// DB.AutoMigrate(&model.Task{}, &model.User{})
 	// DB.Migrator().CreateConstraint(&model.User{}, "Tasks")
 	// DB.Migrator().CreateConstraint(&model.User{}, "fk_users_tasks")
 }
